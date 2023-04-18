@@ -15,13 +15,13 @@ const Products = () => {
   },[]);
   return (
     <Layout>
-        <Link className='bg-green-700 text-white py-1 px-2 rounded-md' href={'/products/new'}>
+        <Link className='btn-primary text-white py-1 px-2 rounded-md' href={'/products/new'}>
           Add new product
         </Link>
         <table className='basic mt-4'>
           <thead>
             <tr>
-              <td>Product className</td>
+              <td>Product Name</td>
               <td></td>
             </tr>
           </thead>

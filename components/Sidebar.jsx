@@ -1,24 +1,27 @@
 import React from 'react'
-import { DashboardIcon, HomeIcon, OrderIcon, ProductIcon, SettingIcon } from './Icons'
+import { DashboardIcon, HomeIcon, LogoutIcon, OrderIcon, ProductIcon, SettingIcon } from './Icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
+import Logo from './Logo';
 
 
-const Sidebar = () => {
+const Sidebar = ({show}) => {
 
-  const inactivelink = 'flex items-center gap-1 p-1';
-  const activelink = inactivelink + ' bg-white text-blue-900 rounded-l-lg'
+  const inactivelink = 'font-semibold flex items-center gap-1 p-1';
+  const activelink = inactivelink + ' bg-primary1 text-black rounded-sm'
   const router = useRouter();
   const {pathname} = router;
 
+  async function logout() {
+    router.push('/');
+    await signOut();
+  }
+
   return (
-    <aside className='text-white p-4 pr-0'>
-    <a className='flex items-center '>
-        <DashboardIcon/>
-        <span className='mr-4'>
-          E-commerce Admin
-        </span>
-    </a>
+    <aside className={(show ? 'left-0' : '-left-full') + 
+    ' top-0 fixed w-full h-full bg-primary2 text-gray-500 p-4 md:static md:w-auto transition-all duration-500'}>
+      <Logo/>
     <nav className='flex flex-col gap-6 mt-6'>
       <Link href='/' className={pathname === '/' ? activelink : inactivelink}>
         <HomeIcon/>
@@ -50,6 +53,12 @@ const Sidebar = () => {
           Setting
         </span>
       </Link>
+      <button onClick={logout}  className={inactivelink}>
+        <LogoutIcon/>
+        <span>
+          Logout
+        </span>
+      </button>
     </nav>
     </aside>
   )

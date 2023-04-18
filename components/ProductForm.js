@@ -12,6 +12,7 @@ const ProductForm = ({
      price: existingPrice,
      photos: existingPhotos,
      category: assignedCategory,
+     properties: assignedProperties,
     }) => {
     const router = useRouter();
   const [name, setName] = useState(existingName || '');
@@ -21,8 +22,8 @@ const ProductForm = ({
   const [backToProducts, setBackToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [category, setCategory] = useState(assignedCategory || '');             //this is for db
-  const [categories, setCategories] = useState([]);         //this is for fetching all the category from categories page
-  const [productProperties, setProductProperties] = useState(null);
+  const [categories, setCategories] = useState([]);                             //this is for fetching all the category from categories page
+  const [productProperties, setProductProperties] = useState(assignedProperties || {});
 
   useEffect(()=>{
     axios.get('/api/categories')
@@ -33,7 +34,14 @@ const ProductForm = ({
 
   const saveProduct = async (e) => {
     e.preventDefault();
-    const data = { name, description, price, photos, category, productProperties };
+    const data = { 
+      name, 
+      description, 
+      price, 
+      photos, 
+      category, 
+      properties:productProperties     //renamed to properties when sending to backend
+    };
     if(_id){
         await axios.put('/api/products', {...data, _id});   //give back id
     }else{
@@ -107,7 +115,7 @@ const ProductForm = ({
           propertiesToGrab.map(p =>(
             <>
             <div>{p.name}</div>
-            <select onChange={(e)=> handleChangeProperties(p.name,e.target.value)}
+            <select onChange={(e)=> handleChangeProperties(p.name, e.target.value)}
                     value={productProperties[p.name]}
                     >
               {p.value.map(v => (

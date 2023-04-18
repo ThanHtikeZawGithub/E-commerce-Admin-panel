@@ -3,6 +3,8 @@ import { fireConfig } from '@/lib/fireConfig';
 import fs from 'fs';
 import mime from 'mime-types';
 import admin from 'firebase-admin';
+import mongooseConfig from '@/lib/mongoose';
+import { isAdminRequest } from './auth/[...nextauth]';
 
 
 if (!admin.apps.length) {
@@ -15,6 +17,10 @@ admin.initializeApp({
 const bucket = admin.storage().bucket();
 
 export default async function handle(req,res) {
+
+  await mongooseConfig();
+  await isAdminRequest(req,res);
+
   const form = new multiparty.Form();
   const {fields,files} = await new Promise((resolve,reject) => {
     form.parse(req, (err, fields, files) => {

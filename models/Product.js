@@ -1,4 +1,5 @@
 import mongoose, {Schema, model, models} from "mongoose";
+import { stringify } from "postcss";
 
 const ProductSchema = new Schema({
     name: {
@@ -14,11 +15,11 @@ const ProductSchema = new Schema({
         {type: String}
     ],
     category: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId || String,
         ref:'Category',
     },
     properties:{
-        type: Object
+        type: Object,
     },
 });
 

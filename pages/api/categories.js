@@ -1,10 +1,13 @@
 import mongooseConfig from "@/lib/mongoose";
 import { Category } from "@/models/Category";
+import { isAdminRequest } from "./auth/[...nextauth]";
 
 
 export default async function (req,res) {
     const {method} = req;
     await mongooseConfig();
+    await isAdminRequest(req,res)
+   
     
     if (method === 'POST') {
         const {name, mainCategory, properties} = req.body;
