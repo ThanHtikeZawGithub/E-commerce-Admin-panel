@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { UploadIcon } from "./Icons";
+import { TrashIcon, UploadIcon } from "./Icons";
 import Spinner from "./Spinner";
 import { ReactSortable } from "react-sortablejs";
 
@@ -93,6 +93,12 @@ const ProductForm = ({
     }
   }
 
+  const removePhoto = (e, link) => {
+    e.preventDefault();
+    const showedPhotos = [...photos.filter(all => all !== link)]
+    return setPhotos(showedPhotos);
+  };
+
   return (
       <form onSubmit={saveProduct}>
         <label>Product Name</label>
@@ -133,8 +139,11 @@ const ProductForm = ({
               className="flex flex-wrap gap-1">
         {photos?.length > 0 && (
               photos.map(link => (
-                <div key={link} className="overflow-hidden">
+                <div key={link} className="overflow-hidden relative">
                   <img src={link} alt='product link' className="w-24 h-24 rounded-md cursor-pointer"/>
+                  <button onClick={(e)=>removePhoto(e, link)} className="absolute bottom-0 right-0 bg-red-400 rounded-full p-1 cursor-pointer hover:scale-105">
+                  <TrashIcon/>
+                  </button>
                 </div>
               ))
             )
