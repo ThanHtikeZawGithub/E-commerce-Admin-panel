@@ -14,7 +14,7 @@ const Sidebar = ({show}) => {
   const {pathname} = router;
 
   async function logout() {
-    router.push('/');
+    await router.push('/');
     await signOut();
   }
 

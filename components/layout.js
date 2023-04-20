@@ -11,8 +11,8 @@ export default function Layout({children}) {
 
   if(!session){
     return (
-      <div className='bg-primary2 w-screen h-screen flex items-center justify-center'>
-        <div className='bg-white p-3 flex items-center justify-between rounded-md gap-2'>
+      <div className='bg-primary1 w-screen h-screen flex items-center justify-center'>
+        <div className='bg-white p-3 flex items-center justify-between rounded-md shadow-lg gap-2'>
           <img src='/assets/google.png' alt='google image' className='w-10 h-10'/>
           <button onClick={() => signIn('google')} className='font-medium text-base'>Login with google</button>
         </div>

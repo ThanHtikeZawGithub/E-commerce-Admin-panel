@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 
 export default function Home() {
   const {data: session} = useSession();
-  console.log(session)
   return <Layout>
     <div className="text-blue-900 flex justify-between">
       <h3>Logged In as <span className="font-bold text-lg">{session?.user?.email}</span></h3>

@@ -10,7 +10,7 @@ import { isAdminRequest } from './auth/[...nextauth]';
 if (!admin.apps.length) {
 admin.initializeApp({
   credential: admin.credential.cert(fireConfig),
-  storageBucket: 'e-commerce-2cf40.appspot.com'
+  storageBucket: process.env.FIREBASE_BUCKET,
 });
 };
 
