@@ -1,14 +1,15 @@
 import Layout from "@/components/layout";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { withSwal } from 'react-sweetalert2';
+import swal from "sweetalert";
 
-const Categories = ({swal}) => {
+const Categories = () => {
   const [editedCategory, setEditedCategory] = useState(null);
   const [name, setName] = useState("");
   const [mainCategory, setMainCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [properties, setProperties] = useState([]);
+
 
   useEffect(() => {
     fetchCategories();
@@ -55,23 +56,23 @@ const Categories = ({swal}) => {
   }
 
   function deleteCategory(category) {
-    swal.fire({
-      title: 'Are you sure ?',
-      text: `Do you want to delete ${category.name}?`,
-      showCancelButton: true,
-      cancelButtonText: 'Cancel',
-      confirmButtonText:'Delete!',
-      confirmButtonColor:'#d55',
-      reverseButtons: true,
-  
-  }).then(async result => {
-      const _id = category._id;
-      if (result.isConfirmed) {
-      await axios.delete('/api/categories?_id=' + _id)
-      }
-      fetchCategories();
-  });
-  }
+      swal({
+        title: 'Are you sure?',
+        text: `This will delete the category ${category.name}`,
+        icon: 'warning',
+        buttons: ['Cancel', 'Delete'],
+        dangerMode: true,
+      }).then(async willDelete => {
+        if (willDelete) {
+          const _id = category._id;
+          await axios.delete('/api/categories?_id=' + _id);
+          fetchCategories();
+          swal('Category deleted!', {
+            icon: 'success',
+          });
+          }
+      });
+    };
 
   function addProperties() {
     setProperties(prev => {
@@ -210,7 +211,9 @@ const Categories = ({swal}) => {
                   </button>
                   <button 
                   onClick={()=> deleteCategory(category)}
-                  className="btn-primary">Delete</button>
+                  className="btn-primary">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -222,6 +225,4 @@ const Categories = ({swal}) => {
   );
 };
 
-export default withSwal(({swal}, ref)=> (
-  <Categories swal={swal}/>
-))
+export default Categories;
